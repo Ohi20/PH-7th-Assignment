@@ -30,6 +30,16 @@ const displayContent = (text) => {
   return text.length < 30 ? text : text.slice(0, 30) + "<span class='fw-bold'>... read more</span>";
 };
 
+const displayReportedPosts = () => {
+  const reportedPosts = getReportedPosts();
+  posts.forEach((post) => {
+    const div = createPost(post);
+    // const div = createElement('posts');
+    document.getElementById("reported").appendChild(div);
+    // reportedPosts.appendChild(div);
+  });
+};
+
 const switchTab = (id) => {
   if (id === "posts") {
     document.getElementById("posts").style.display = "grid";
@@ -43,14 +53,27 @@ const switchTab = (id) => {
     displayLikedPosts();
   } else {
     document.getElementById("reported").style.display = "block";
+
     document.getElementById("posts").style.display = "none";
     document.getElementById("liked").style.display = "none";
-
     displayReportedPosts();
+
   }
 };
-
+// const myArray = post.comments;
+// myArray.forEach([key, value]) => {
+//   console.log(key);
+//   console.log(value);
+// }
 const createPost = (post) => {
+  // const CommentAndText = JSON.parse(post.comments);
+  // console.log(CommentAndText);
+  //   fooArray = Object.entries(fooObj);
+
+  // fooArray.forEach(([key, value]) => {
+  //   console.log(key); // 'one'
+  //   console.log(value); // 1
+  // })
   const image = post.image;
   const div = document.createElement("article");
   div.classList.add("post");
@@ -119,9 +142,9 @@ const createPost = (post) => {
                   <div class="post__description">
                     <small>
                       <a class="post__name--underline" href="#">
-                          ${post.comments?.user}
+                          ${post.comments[0]}
                       </a>
-                      ${post.comments?.text}
+                      ${post.comments}
                     </small>
                   </div>
                   <span class="post__date-time">30 minutes ago</span>
@@ -149,13 +172,7 @@ const displayLikedPosts = () => {
   });
 };
 
-const displayReportedPosts = () => {
-  const reportedPosts = getReportedPosts();
-  posts.forEach((post) => {
-    const div = createPost(post);
-    document.getElementById("reported").appendChild(div);
-  });
-};
+
 
 const loadPosts = async () => {
   let data = await fetch('../data/posts.json');
