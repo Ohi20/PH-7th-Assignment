@@ -8,7 +8,9 @@ const getLikedPosts = () => {
 };
 
 const getReportedPosts = () => {
+  console.log(posts);
   return posts.filter((post) => reportedPostsId.includes(post.id));
+  
 };
 
 const isLiked = (id) => {
@@ -19,7 +21,15 @@ const addToLiked = (id) => {
   likedPostsId.push(id);
   showPosts(posts);
 };
+const showPosts = (posts) => {
+  const productsContainer = document.getElementById("posts");
+  productsContainer.innerHTML = "";
 
+  posts.forEach((post) => {
+    const div = createPost(post);
+    productsContainer.appendChild(div);
+  });
+};
 const reportPost = (id) => {
   reportedPostsId.push(id);
   const remainingPosts = posts.filter((post) => !reportedPostsId.includes(post.id));
@@ -37,6 +47,7 @@ const displayReportedPosts = () => {
     // const div = createElement('posts');
     document.getElementById("reported").appendChild(div);
     // reportedPosts.appendChild(div);
+    // showPosts(reportedPosts);
   });
 };
 
@@ -53,7 +64,7 @@ const switchTab = (id) => {
     displayLikedPosts();
   } else {
     document.getElementById("reported").style.display = "block";
-
+    document.getElementById("QuesAns").style.display = "none";
     document.getElementById("posts").style.display = "none";
     document.getElementById("liked").style.display = "none";
     displayReportedPosts();
@@ -75,6 +86,8 @@ const createPost = (post) => {
   //   console.log(value); // 1
   // })
   const image = post.image;
+  //  console.log(post.comments[0]);
+  const obJect = Object.values(post.comments[0]);
   const div = document.createElement("article");
   div.classList.add("post");
   div.innerHTML = `
@@ -142,9 +155,9 @@ const createPost = (post) => {
                   <div class="post__description">
                     <small>
                       <a class="post__name--underline" href="#">
-                          ${post.comments[0]}
+                          ${obJect[0]} :
                       </a>
-                      ${post.comments}
+                      ${obJect[1]}
                     </small>
                   </div>
                   <span class="post__date-time">30 minutes ago</span>
@@ -154,15 +167,7 @@ const createPost = (post) => {
   return div;
 };
 
-const showPosts = (posts) => {
-  const productsContainer = document.getElementById("posts");
-  productsContainer.innerHTML = "";
 
-  posts.forEach((post) => {
-    const div = createPost(post);
-    productsContainer.appendChild(div);
-  });
-};
 
 const displayLikedPosts = () => {
   const likedPosts = getLikedPosts();
